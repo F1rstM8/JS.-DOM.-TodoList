@@ -19,14 +19,33 @@ function renderTasks() {
     list.append(li);
   });
 }
-addBtn.addEventListener("click", () => {
-  const text = input.value.trim();
-  if (text !== "") {
+
+const errorMessage = document.querySelector('#error-message');
+function addTask() {
+    const text = input.value.trim(); 
+    if (text === '') {
+        input.classList.add('input-error'); 
+        errorMessage.textContent = 'Будь ласка, введіть текст справи!';
+        errorMessage.style.display = 'block'; 
+        return; 
+    }
     tasks.push({
-      id: Date.now(),
-      text: text,
+        id: Date.now(),
+        text: text
     });
-    input.value = "";
+    input.value = ''; 
+    input.classList.remove('input-error');
+    errorMessage.style.display = 'none';
+    
     renderTasks();
-  }
+}
+addBtn.addEventListener('click', addTask);
+input.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+input.addEventListener('input', () => {
+    input.classList.remove('input-error');
+    errorMessage.style.display = 'none';
 });
